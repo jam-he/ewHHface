@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+	>
+<head>
+<title>人脸识别检测数据</title>
+
+<meta charset="UTF-8" name="viewport"
+	content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css"></link>
+<link rel="stylesheet" href="../assets/css/photo.css"></link>
+
+ <script  src="../assets/js/My97DatePicker/WdatePicker.js"></script>
+ <script  src="../assets/js/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+			<form id="toMenu" th:action="@{/ewface/menu}" method="post"> 
+			</form>
+	
+			
+			<form th:action="@{/ewface/list}" method="post">
+				<div class="input-group input-group-lg">
+						<span class="input-group-addon" id="sizing-addon1">开始时间</span>
+						<input id="startTime" name="startTime" type="text"  class="form-control" readonly="readonly" 
+						 		  onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'});" th:value="${startTime}" aria-describedby="sizing-addon1"/>
+				</div>
+				<div class="input-group input-group-lg">
+						<span class="input-group-addon" id="sizing-addon2">结束时间</span>
+						<input id="endTime" name="endTime" type="text" class="form-control" readonly="readonly" 
+								  onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'});" th:value= "${endTime}" aria-describedby="sizing-addon2"/>
+				</div>
+				<div class="input-group input-group-lg">
+						<span class="input-group-addon" id="sizing-addon3">最小相似度</span>
+						<input id="minScore" name="minScore" type="text" class="form-control"  th:value="${minScore}"  aria-describedby="sizing-addon3"/>
+				</div>
+				<div class="input-group input-group-lg">
+						<span class="input-group-addon" id="sizing-addon4">最大相似度</span>
+						<input id="maxScore" name="maxScore" type="text"  class="form-control"  th:value="${maxScore}" aria-describedby="sizing-addon4" />
+				</div>
+				<div class="btn-group">
+						<input type="submit" value="查询" class="btn btn-info" />
+	 					<input type="button" value="返回菜单页面" class="btn btn-info" onClick="$('#toMenu').submit()"/>
+				</div>
+			 </form>
+	  <!-- photo -->
+       <div class="grid_1">
+         <div class="photo_list">
+           <ul>           
+               <li th:each="data,dataStat : ${dataList}">
+                 <div class="similarity">
+                   <p class="dec">相似度</p>
+                   <p class="red" th:text="${data.score}"></p>
+                 </div>
+                   <div class="photo">
+                     <div class="photo_1">
+                       <div class="photo_3">证件照</div>
+                       <div class="photo_4">取像</div>
+                     </div>
+                     <div class="photo_2">
+                       <div class="photo_5"><img th:src="@{'/ewface/getPhoto/idPhoto/'+${data.id}}"/></div>
+                       <div class="photo_5"><img th:src="@{'/ewface/getPhoto/facePhoto/'+${data.id}}"/></div>
+                     </div>
+                   </div>
+                   <div >
+                   <p>姓名：<span th:text="${data.idName}"></span></p>               
+                    <p>性别：<span th:if="${data.idSex} =='1'">男</span>
+                    			  <span th:if="${data.idSex} !='1'">女</span>
+                    </p>   
+                   <p>证件号：<span th:text="${data.idNo}"></span></p>
+                  <p> 是否通过：<span th:if="${data.isPass}=='1'" >是</span>
+                  						<span th:if="${data.isPass}!='1'" >否</span>
+                  </p>
+                   <p>验证时间：<span th:text="${data.time}"></span></p>                    
+                   </div>
+               </li>
+         
+           </ul>
+         </div>
+       </div>
+       
+      
+</body>
+</html>

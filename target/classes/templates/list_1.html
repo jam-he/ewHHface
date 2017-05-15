@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+	<title>人脸识别检测数据</title>
+	<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1" />
+	
+   		<script src="../assets/js/jquery-1.11.1.min.js"></script>
+        <script src="../assets/js/jquery.pagination.min.js"></script>
+        <link rel="stylesheet" href="../assets/css/pagination.css"></link>
+		<link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css"></link>
+		
+		<script type="text/javascript">
+				$(document).ready(function()
+						{
+							var total1 = $("#total").val();
+							var size = 5;
+							$('.M-box').pagination({
+								 	totalData:total1,
+								    showData:size,
+								    coping:true,
+								    homePage:'首页',
+								    endPage:'末页',
+								    prevContent:'上页',
+								    nextContent:'下页',
+								    callback:function(api){
+								    	
+								    	var data = {
+								    			page : api.getCurrent(),
+								    			size  : size
+								    	};
+								    	
+								    	$.ajax({
+								    		type: 'POST',
+								    		url:"/ewface/list",
+								    		data:data,
+								    		async:false,
+								    		dataType:'html',
+								    		success:function(data){
+								        		$("body").html(data);
+								    		}
+								    	})
+								    }
+							})
+						});
+		</script>
+	
+	
+</head>
+<body>
+		<input type="hidden" th:value="${total}" id="total"/>
+		<form id="searchForm" action="${ctx}/act/model/" method="post" class="breadcrumb form-search">
+			<table>
+			<tr>
+			<td>时间:</td><td><input id="date"/></td>
+			<td>相似率:</td><td><select>  
+		  <option value="1">1</option>  
+		  <option value="2">2</option>  
+		  <option value="3">3</option></select></td>
+		  <td><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></td>
+		  <td><input type="button"  value="退出"   class="btn btn-primary"/></td>
+			</tr>
+			</table>
+		</form>
+
+	<div class="table-responsive ">
+		
+		<table class="table table-bordered table-striped  table-condensed">
+			
+			<tr>
+				<th>#</th>
+				<th>ID</th>
+				<th>检测数</th>
+				<th>检测通过数</th>
+			</tr>
+			
+			<tr th:each="data,dataStat : ${dataList}">
+				<td th:text="${dataStat.index+1}"></td>
+				<td th:text="${data.id}" ></td>
+				<td th:text="${data.faceTotal}" ></td>
+				<td th:text="${data.faceTotalPass}" ></td>
+			</tr>
+			
+		</table>
+	</div>
+
+</body>
+<div class="M-box"></div>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+	>
+<head>
+<title>人脸识别检测数据</title>
+<style> 
+.container{
+                display:table;
+                height:100%;
+            }
+ .row{
+    display: table-cell;
+    vertical-align: middle;
+}
+.row-centered {
+    text-align:center;
+}
+html,body{  
+    height: 100%;  
+}  
+</style>
+<meta charset="UTF-8" name="viewport"
+	content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css"></link>
+<link rel="stylesheet" href="../assets/css/photo.css"></link>
+
+ <script  src="../assets/js/My97DatePicker/WdatePicker.js"></script>
+ <script  src="../assets/js/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+		 	<form id="logout" th:action="@{/logout}" method="post">
+			</form>
+			<form id="toTable" th:action="@{/ewface/list2}" method="post">
+			</form>
+			<form id="toEcharts" th:action="@{/ewface/echarts}" method="post">
+			</form> 
+			<form id="tolist" th:action="@{/ewface/list}" method="post">
+			</form>
+			<div class="container">
+				<div class="row row-centered">
+		            <img th:src="@{../assets/img/menu_list.png}" onClick="$('#tolist').submit()"/>
+		           <img th:src="@{../assets/img/menu_detail.png}" onClick="$('#toTable').submit()"/>
+		            <img th:src="@{../assets/img/menu_echarts.png}"  onClick="$('#toEcharts').submit()" />
+		            <img th:src="@{../assets/img/menu_out.png}"  onClick="$('#logout').submit()"/>
+		       </div>
+		   </div>
+</body>
+</html>

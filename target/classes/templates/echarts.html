@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		 xmlns:th="http://www.thymeleaf.org"
+		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+>
+<head>
+ 		<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css"></link>
+		<script src="../assets/js/echarts.js"></script>
+		<script src="../assets/js/jquery-1.11.1.min.js"></script>
+		<title>饼图</title>
+</head>
+<body>
+		<form id="toMenu" th:action="@{/ewface/menu}" method="post"> 
+			</form>
+	
+ 	<form id="toEcharts"  th:action="@{/ewface/echarts}"  method="post">
+	 	<input id="enginee" name="enginee" th:value="${enginee}" class="form-control"   type="hidden" />
+		 <div class="btn-group">
+	 	<input type="button" value="返回菜单页面" class="btn btn-info" onClick="$('#toMenu').submit()"/>
+	 	 	<input type="button" value="A" class="btn btn-info" onClick="toEcharts('A')" />
+		 	<input type="button" value="B" class="btn btn-info" onClick="toEcharts('B')" />
+		 	<input type="button" value="C" class="btn btn-info" onClick="toEcharts('C')" />
+		 	<input id="threshold"  name="threshold"  type="number"  th:value="${threshold}" class="form-control"  style="width:66px;" onkeyup="toEcharts2()"/>
+		</div>
+	</form>
+ <div class="input-group">
+	 	<input id="group0"  type="hidden"  th:value="${group0}"/>
+		<input id="group1"  type="hidden"  th:value="${group1}"/>
+		<input id="group2"  type="hidden"  th:value="${group2}"/>
+		<input id="group3"  type="hidden"  th:value="${group3}"/>
+		<input id="group4"  type="hidden"  th:value="${group4}"/>
+		<input id="group5"  type="hidden"  th:value="${group5}"/>
+		<input id="group6"  type="hidden"  th:value="${group6}"/>
+		<input id="group7"  type="hidden"  th:value="${group7}"/>
+		<input id="group8"  type="hidden"  th:value="${group8}"/>
+		<input id="group9"  type="hidden"  th:value="${group9}"/>
+		
+		<input id="group10"  type="hidden"  th:value="${group10}"/>
+		<input id="group11"  type="hidden"  th:value="${group11}"/>
+</div>
+		<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+	    <div align="center" id="main" style="width: 800px;height:600px;"></div>
+	    
+	 	<script type="text/javascript">
+		
+		function toEcharts(param){
+			
+			$('#enginee').val(param);
+			$('#toEcharts').submit();
+		}
+		
+		var valve = $('#threshold').val();
+		
+		function toEcharts2(){
+			debugger;
+			var temp =  $('#threshold').val();
+			if(temp.length!=2){
+				return;
+			}else{
+				$('#toEcharts').submit();
+			}
+		}
+
+		//饼图数据
+		
+	 	var data0 = $("#group0").val();
+		var data1 = $("#group1").val();
+		var data2 = $("#group2").val();
+		var data3 = $("#group3").val();
+		var data4 = $("#group4").val();
+		var data5 = $("#group5").val();
+		var data6 = $("#group6").val();
+		var data7 = $("#group7").val();
+		var data8 = $("#group8").val();
+		var data9 = $("#group9").val();
+		
+		var data10 = $("#group10").val();
+		var data11 = $("#group11").val();
+		
+		var subtext = $("#enginee").val(); 
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+        // 指定图表的配置项和数据
+         var option = {
+        		 title : {
+        		        text: '人脸识别得分分布',
+        		        subtext: subtext,
+        		        x:'center'
+        		    },
+        		    tooltip : {
+        		        trigger: 'item',
+        		        formatter: "{a} <br/>{b} : {c} ({d}%)"
+        		    },
+        		    legend: {
+        		        x: 'center',
+        		        y: 'bottom',
+        		        data: ['0~9','10~19','20~29','30~39','40~49','50~59','60~69','70~79','80~89','90~99']
+        		    },
+        		 series : [
+        		           {
+        		               name: '得分分布',
+        		               type: 'pie',
+        		               radius: '55%',
+        		               center:['25%','50%'],
+        		               data:[
+        		                   {value:data0, name:'0~9'},
+        		                   {value:data1, name:'10~19'},
+        		                   {value:data2, name:'20~29'},
+        		                   {value:data3, name:'30~39'},
+        		                   {value:data4, name:'40~49'},
+        		                   {value:data5, name:'50~59'},
+        		                   {value:data6, name:'60~69'},
+        		                   {value:data7, name:'70~79'},
+        		                   {value:data8, name:'80~89'},
+        		                   {value:data9, name:'90~99'}
+        		               ],
+        		               itemStyle: {
+        		                   emphasis: {
+        		                       shadowBlur: 10,
+        		                       shadowOffsetX: 0,
+        		                       shadowColor: 'rgba(0, 0, 0, 0.5)'
+        		                   }
+        		               }
+        		           }, {
+        		               name:'阀值分布',
+        		               type:'pie',
+        		               radius : '55%',
+        		               center : ['75%', '50%'],
+        		               data:[
+        		                   {value:data10, name:'小于'+valve},
+        		                   {value:data11, name:'大于'+valve}
+        		               ]
+        		           }
+        		       ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option); 
+    </script>
+    
+</body>
+
+</html>

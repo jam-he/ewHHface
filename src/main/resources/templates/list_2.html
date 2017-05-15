@@ -1,0 +1,63 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+	<title>人脸识别检测数据</title>
+	<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1" />
+	
+   		<script src="../assets/js/jquery-1.11.1.min.js"></script>
+		<link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css"></link>
+</head>
+<body>
+		<form id="toMenu" th:action="@{/ewface/menu}" method="post"> 
+		</form>
+		<form id="exportExcel" th:action="@{/ewface/exportExcel}" method="post">
+		</form> 
+	<div class="btn-group">
+	
+	 	<input type="button" value="返回菜单页面" class="btn btn-info" onClick="$('#toMenu').submit()"/>
+	 	<input type="button" value="导出EXCEL" class="btn btn-info" onClick="$('#exportExcel').submit()"/>
+	</div>
+	<div class="table-responsive ">
+		
+		<table class="table table-bordered table-striped  table-condensed">
+			
+			<tr>
+				<th>#</th>
+				<th>ID</th>
+				<th>身份证姓名</th>
+				<th>身份证性别</th>
+				<th>身份证号</th>
+				<th>身份证相片</th>
+				<th>车票车次</th>
+				<th>车票乘车时间</th>
+				<th>核验时间</th>
+				<th>是否通过</th>
+				<th>人脸相片</th>
+				<th>比对阀值</th>
+				<th>比对分值</th>
+				<th>人脸系统</th>
+			</tr>
+			
+			<tr th:each="data,dataStat : ${dataList}">
+				<td th:text="${dataStat.index+1}"></td>
+				<td th:text="${data.id}" ></td>
+				<td th:text="${data.idName}" ></td>
+				<td th:text="${data.idSex}" ></td>
+				<td th:text="${data.idNo}" ></td>
+				<td th:text="${data.tktTrain}" ></td>
+				<td th:text="${data.tktTime}" ></td>
+				<td th:text="${data.time}" ></td>
+				<td th:text="${data.isPass}" ></td>
+				<td th:text="${data.threshold}" ></td>
+				<td th:text="${data.score}" ></td>
+				<td th:text="${data.enginee}" ></td>
+				<td><img th:src="@{'/ewface/getPhoto/idPhoto/'+${data.id}}"/></td>
+				<td><img th:src="@{'/ewface/getPhoto/facePhoto/'+${data.id}}" width="102px" height="126px"/></td>
+			</tr>
+			
+		</table>
+	</div>
+</body>
+</html>
